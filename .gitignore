@@ -8,6 +8,7 @@ mason/
 shada
 undo
 log
+*.log
 luasnip.log
 mason-registry-update
 mason.log
