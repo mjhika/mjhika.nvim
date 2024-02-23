@@ -1,24 +1,27 @@
 -- [[ Setting options ]]
 vim.g.mapleader = ' ' -- bindings for global
 vim.g.maplocalleader = ',' -- bindings for local
-vim.o.hlsearch = true
-vim.o.colorcolumn = '80,120' -- column width
-vim.o.number = true
-vim.o.relativenumber = true -- relative numbers
-vim.o.mouse = 'a' -- enable mouse
-vim.o.clipboard = 'unnamedplus' -- see :h clipboard
-vim.o.breakindent = true
-vim.o.undofile = true -- Save undo history
-vim.o.ignorecase = true -- Case-insensitive searching
-vim.o.smartcase = true
-vim.wo.signcolumn = 'yes' -- signcolumn to the left of the numbers
-vim.o.updatetime = 250 -- Decrease update time
-vim.o.completeopt = 'menuone,noselect' -- a better completion experience
-vim.o.termguicolors = true -- all the colors
-vim.o.tabstop = 2 -- Set whitespace to be 2 always
-vim.o.shiftwidth = 2 -- Set whitespace to be 2 always
-vim.o.softtabstop = 2 -- Set whitespace to be 2 always
-vim.o.expandtab = true -- spaces are better than tabs
+vim.opt.hlsearch = true
+vim.opt.colorcolumn = '80,120' -- column width
+vim.opt.cursorline = true
+vim.opt.number = true
+vim.opt.relativenumber = true -- relative numbers
+vim.opt.mouse = 'a' -- enable mouse
+vim.opt.clipboard = 'unnamedplus' -- see :h clipboard
+vim.opt.breakindent = true
+vim.opt.undofile = true -- Save undo history
+vim.opt.ignorecase = true -- Case-insensitive searching
+vim.opt.inccommand = 'split' -- preview the things you are changing using substitution
+vim.opt.smartcase = true
+vim.opt.signcolumn = 'yes' -- signcolumn to the left of the numbers
+vim.opt.updatetime = 250 -- Decrease update time
+vim.opt.completeopt = 'menuone,noselect' -- a better completion experience
+vim.opt.termguicolors = true -- all the colors
+vim.opt.tabstop = 2 -- Set whitespace to be 2 always
+vim.opt.shiftwidth = 2 -- Set whitespace to be 2 always
+vim.opt.softtabstop = 2 -- Set whitespace to be 2 always
+vim.opt.expandtab = true -- spaces are better than tabs
+vim.opt.splitbelow = true -- open splits on the bottom
 
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
@@ -38,6 +41,11 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+vim.keymap.set('n', '<leader>tt', function()
+  vim.cmd.split()
+  vim.cmd.terminal()
+end, { desc = '[T]oggle [t]erm' })
 
 -- [[ Highlight on yank ]]
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -66,7 +74,7 @@ vim.opt.rtp:prepend(lazypath)
 -- configure plugins in the following
 require('lazy').setup({
   'tpope/vim-sleuth',
-  'numToStr/Comment.nvim',
+  { 'numToStr/Comment.nvim', opts = {} },
 
   {
     'stevearc/conform.nvim',
@@ -98,8 +106,9 @@ require('lazy').setup({
       -- document existing key chains
       require('which-key').register {
         ['<leader>d'] = { name = '[D]iagnostics', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+        ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
         ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
+        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -165,28 +174,28 @@ require('lazy').setup({
         }
       end, { desc = '[/] in Open Files' })
 
-      vim.keymap.set('n', '<leader>sF', function() -- search files but include ignored files
+      vim.keymap.set('n', '<leader>fF', function() -- search files but include ignored files
         builtin.find_files {
           no_ignore = true,
         }
-      end, { desc = '[S]earch [F]iles (no ignore)' })
+      end, { desc = '[F]ind [F]iles (no ignore)' })
 
-      vim.keymap.set('n', '<leader>sn', function() -- Shortcut for searching your neovim configuration files
+      vim.keymap.set('n', '<leader>fn', function() -- Shortcut for searching your neovim configuration files
         builtin.find_files {
           cwd = vim.fn.stdpath 'config',
         }
-      end, { desc = '[S]earch [N]eovim files' })
+      end, { desc = '[F]ind in [N]eovim files' })
 
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymap' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader>sv', builtin.git_files, { desc = '[S]earch [V]ersion Control (git)' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch [g]rep' })
-      vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
+      vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymap' })
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
+      vim.keymap.set('n', '<leader>fs', builtin.builtin, { desc = '[F]ind [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = '[F]ind current [W]ord' })
+      vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = '[F]ind [R]esume' })
+      vim.keymap.set('n', '<leader>f.', builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
+      vim.keymap.set('n', '<leader>fv', builtin.git_files, { desc = '[F]ind [V]ersion Control (git)' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = '[F]ind [g]rep' })
+      vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     end,
   },
 
@@ -238,6 +247,7 @@ require('lazy').setup({
         clangd = {},
         gopls = {},
         clojure_lsp = {},
+        ocamllsp = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes { ...},
@@ -259,6 +269,7 @@ require('lazy').setup({
         'stylua',
         'clj-kondo',
         'zprint',
+        'ocamlformat',
         'goimports',
         'golangci-lint',
       }
