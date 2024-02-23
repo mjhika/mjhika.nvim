@@ -1,9 +1,9 @@
 return {
   {
-    'bradcush/nvim-base16',
-    priority = 1000,
+    'mcchrish/zenbones.nvim',
+    dependencies = 'rktjmp/lush.nvim',
     config = function()
-      vim.cmd.colorscheme 'base16-ia-dark'
+      vim.cmd.colorscheme 'kanagawabones'
     end,
   },
 }

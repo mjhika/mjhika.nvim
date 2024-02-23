@@ -7,7 +7,6 @@ vim.opt.cursorline = true
 vim.opt.number = true
 vim.opt.relativenumber = true -- relative numbers
 vim.opt.mouse = 'a' -- enable mouse
-vim.opt.clipboard = 'unnamedplus' -- see :h clipboard
 vim.opt.breakindent = true
 vim.opt.undofile = true -- Save undo history
 vim.opt.ignorecase = true -- Case-insensitive searching
@@ -31,10 +30,14 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move up half page' }) -- cente
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move down half page' }) -- center while scrolling
 vim.keymap.set('n', '<C-j>', ':bnext<CR>', { desc = 'Next Buffer', silent = true }) -- easily change buffers
 vim.keymap.set('n', '<C-k>', ':bprev<CR>', { desc = 'Previous Buffer', silent = true }) -- easily change buffers
-vim.keymap.set('n', '<leader>c', ':bdelete<CR>', { desc = 'Delete Buffer', silent = true }) -- close buffer
+vim.keymap.set('n', '<leader>c', ':bdelete<CR>', { desc = 'Close Buffer', silent = true }) -- close buffer
+vim.keymap.set('n', '<leader>C', ':bdelete!<CR>', { desc = 'Force Close Buffer', silent = true }) -- close buffer really
 vim.cmd [[ nnoremap <silent> <expr> <CR> {-> v:hlsearch ? "<cmd>nohl\<CR>" : "\<CR>"}() ]] -- clear the highlighted search with <CR>
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true }) -- Remap for dealing with word wrap
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true }) -- Remap for dealing with word wrap
+vim.keymap.set('t', '<C-c><C-c>', '<C-\\><C-n>', { desc = 'Escape Escape from the terminal' }) -- make escaping the terminal easier
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected line down' }) -- easier select moving
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected line up' }) -- easier select moving
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -42,7 +45,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.keymap.set('n', '<leader>tt', function()
+vim.keymap.set('n', '<leader>tt', function() -- make a terminal appear
   vim.cmd.split()
   vim.cmd.terminal()
 end, { desc = '[T]oggle [t]erm' })
@@ -216,33 +219,34 @@ require('lazy').setup({
     config = function()
       require('neodev').setup()
 
-      local on_attach = function(_, bufnr) --  This function gets run when an LSP connects to a particular buffer.
-        local nmap = function(keys, func, desc)
-          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
-        end
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        callback = function(event)
+          local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+          end
+          -- Important LSP Navigation keybinds
+          --  To jump back, press <C-T>.
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('<leader>lt', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>lsd', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>lsw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-        -- Important LSP Navigation keybinds
-        --  To jump back, press <C-T>.
-        nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-        nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-        nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-        nmap('<leader>lt', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-        nmap('<leader>lsd', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-        nmap('<leader>lsw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>lr', vim.lsp.buf.rename, '[L]SP [R]ename') -- Rename the variable under your cursor
+          map('<leader>lc', function()
+            vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
+          end, '[L]SP [C]ode Action')
+          map('K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
+          map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
+        end,
+      })
 
-        -- NOTE: This is not Goto Definition, this is Goto Declaration.
-        --  For example, in C this would take you to the header
-        nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-        nmap('<leader>lr', vim.lsp.buf.rename, '[L]SP [R]ename') -- Rename the variable under your cursor
-        nmap('<leader>lc', function()
-          vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
-        end, '[L]SP [C]ode Action')
-        nmap('K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
-        nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
-      end
-
-      local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
       local servers = {
         clangd = {},
         gopls = {},
@@ -254,7 +258,13 @@ require('lazy').setup({
           -- capabilities = {},
           settings = {
             Lua = {
-              workspace = { checkThirdParty = false },
+              workspace = {
+                checkThirdParty = false,
+                library = {
+                  '${3rd}/luv/library',
+                  unpack(vim.api.nvim_get_runtime_file('', true)),
+                },
+              },
               telemetry = { enable = false },
               diagnostics = { disable = { 'missing-fields' } },
             },
@@ -262,19 +272,18 @@ require('lazy').setup({
         },
       }
 
-      -- Ensure the servers above are installed
-      require('mason').setup()
-
-      local installed = {
+      local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
         'stylua',
-        'clj-kondo',
-        'zprint',
         'ocamlformat',
         'goimports',
         'golangci-lint',
-      }
-      vim.list_extend(installed, vim.tbl_keys(servers))
-      require('mason-tool-installer').setup { ensure_installed = installed }
+      })
+
+      vim.list_extend(ensure_installed, vim.tbl_keys(servers))
+      -- Ensure the servers above are installed
+      require('mason').setup()
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -283,9 +292,7 @@ require('lazy').setup({
               cmd = server.cmd,
               settings = server.settings,
               filetypes = server.filetypes,
-              on_attach = on_attach,
-              -- capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities),
-              capabilities = server.capabilities or capabilities,
+              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
             }
           end,
         },
