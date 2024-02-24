@@ -1,0 +1,25 @@
+-- [[ Setting options ]]
+vim.g.mapleader = ' ' -- bindings for global
+vim.g.maplocalleader = ',' -- bindings for local
+vim.opt.hlsearch = true
+vim.opt.colorcolumn = '80,120' -- column width
+vim.opt.cursorline = true
+vim.opt.number = true
+vim.opt.relativenumber = true -- relative numbers
+vim.opt.mouse = 'a' -- enable mouse
+vim.opt.breakindent = true
+vim.opt.undofile = true -- Save undo history
+vim.opt.ignorecase = true -- Case-insensitive searching
+vim.opt.inccommand = 'split' -- preview the things you are changing using substitution
+vim.opt.smartcase = true
+vim.opt.signcolumn = 'yes' -- signcolumn to the left of the numbers
+vim.opt.updatetime = 250 -- Decrease update time
+vim.opt.completeopt = 'menuone,noselect' -- a better completion experience
+vim.opt.termguicolors = true -- all the colors
+vim.opt.tabstop = 2 -- Set whitespace to be 2 always
+vim.opt.shiftwidth = 2 -- Set whitespace to be 2 always
+vim.opt.softtabstop = 2 -- Set whitespace to be 2 always
+vim.opt.expandtab = true -- spaces are better than tabs
+vim.opt.splitbelow = true -- open splits on the bottom
+vim.opt.timeout = true -- timeout for which-key
+vim.opt.timeoutlen = 350 -- timeout for which-key
