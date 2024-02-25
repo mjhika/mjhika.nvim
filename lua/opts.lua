@@ -23,3 +23,4 @@ vim.opt.expandtab = true -- spaces are better than tabs
 vim.opt.splitbelow = true -- open splits on the bottom
 vim.opt.timeout = true -- timeout for which-key
 vim.opt.timeoutlen = 350 -- timeout for which-key
+vim.opt.showmode = false -- disable echoing the mode in favor of the status line
