@@ -9,6 +9,7 @@ return {
       require('nvim-treesitter.configs').setup {
         -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
         -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+        ensure_installed = { 'lua', 'c', 'clojure' },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
