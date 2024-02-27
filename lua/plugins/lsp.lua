@@ -49,6 +49,7 @@ return {
         gopls = {},
         clojure_lsp = {},
         ocamllsp = {},
+        zls = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes { ...},
