@@ -13,8 +13,10 @@ return {
       require('undotree').setup()
       vim.keymap.set('n', '<leader>u', '<cmd>lua require("undotree").toggle()<cr>', { desc = 'Undo Tree' })
     end,
-    -- keys = { -- load the plugin only when using it's keybinding:
-    --   { '<leader>u', "<cmd>lua require('undotree').toggle()<cr>" },
-    -- },
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
   },
 }
