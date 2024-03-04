@@ -35,6 +35,7 @@
   "telescope-fzf-native.nvim": { "branch": "main", "commit": "6c921ca12321edaa773e324ef64ea301a1d0da62" },
   "telescope-ui-select.nvim": { "branch": "master", "commit": "6e51d7da30bd139a6950adf2a47fda6df9fa06d2" },
   "telescope.nvim": { "branch": "0.1.x", "commit": "d90956833d7c27e73c621a61f20b29fdb7122709" },
+  "tinygo.nvim": { "branch": "main", "commit": "3908a71c00385dffd6cc987a6ff989c9a2483b8b" },
   "undotree": { "branch": "main", "commit": "eab459ab87dd249617b5f7187bb69e614a083047" },
   "vim-go": { "branch": "master", "commit": "744aa9911aa6a86cff494a57efc22ca0e3d7e16b" },
   "vim-shot-f": { "branch": "master", "commit": "eea71d2a1038aa87fe175de9150b39dc155e5e7f" },
