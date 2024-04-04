@@ -5,7 +5,11 @@ return {
   },
   {
     'pcolladosoto/tinygo.nvim',
-    ft = 'go',
+    cmd = {
+      'TinyGoSetTarget',
+      'TinyGoTargets',
+      'TinyGoEnv',
+    },
     opts = {},
   },
 }
