@@ -48,7 +48,7 @@ return {
         clangd = {},
         gopls = {},
         clojure_lsp = {},
-        ocamllsp = {},
+        -- ocamllsp = {},
         zls = {},
         lua_ls = {
           -- cmd = {...},
