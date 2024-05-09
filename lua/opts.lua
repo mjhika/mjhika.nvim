@@ -27,3 +27,4 @@ vim.opt.timeoutlen = 350 -- timeout for which-key
 vim.opt.showmode = false -- disable echoing the mode in favor of the status line
 vim.opt.list = true -- formatting for some whitespace
 vim.opt.listchars = 'tab:⇥ ,eol:λ,nbsp:⋅,trail:∘' -- the whitespace replacements
+vim.opt.background = 'light'

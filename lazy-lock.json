@@ -14,6 +14,7 @@
   "javap-vim": { "branch": "master", "commit": "0d2af4e6eb675bd38a169050b1daa79847cb0146" },
   "lazy.nvim": { "branch": "main", "commit": "3f13f080434ac942b150679223d54f5ca91e0d52" },
   "lspkind.nvim": { "branch": "master", "commit": "1735dd5a5054c1fb7feaf8e8658dbab925f4f0cf" },
+  "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
   "markdown-preview.nvim": { "branch": "master", "commit": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" },
   "mason-lspconfig.nvim": { "branch": "main", "commit": "f3658bfc667df6a0340194a015ac2f31c1e675e0" },
   "mason-tool-installer.nvim": { "branch": "main", "commit": "b129892f783740e6cf741f2ea09fa5dd512aa584" },
