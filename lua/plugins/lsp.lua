@@ -36,8 +36,8 @@ return {
           map('<leader>lc', function()
             vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
           end, '[L]SP [C]ode Action')
-          map('K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
-          map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
+          map('<leader>K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
+          map('<M-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
         end,
       })
 
