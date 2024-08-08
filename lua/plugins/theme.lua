@@ -1,9 +1,9 @@
 return {
   {
-    'miikanissi/modus-themes.nvim',
+    'savq/melange-nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'modus_operandi'
+      vim.cmd.colorscheme 'melange'
     end,
   },
 }
