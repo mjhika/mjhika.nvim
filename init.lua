@@ -97,26 +97,50 @@ require('lazy').setup({
     },
   },
 
-  -- most taken straight from kickstart
-  require 'plugins.whitespace',
-  require 'plugins.comment',
-  require 'plugins.autoformat',
-  require 'plugins.which',
-  require 'plugins.telescope',
-  require 'plugins.lsp',
-  require 'plugins.autocomplete',
-  require 'plugins.mini',
-  require 'plugins.treesitter',
-  require 'plugins.markdown',
+  -- require 'plugins.theme',
+  -- require 'plugins.navigation',
+  -- require 'plugins.autopairs',
+  -- require 'plugins.whitespace',
+  -- require 'plugins.comment',
+  -- require 'plugins.which',
+  -- require 'plugins.mini',
+  { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
-  -- mostly my own choices
-  require 'plugins.theme',
-  require 'plugins.navigation',
-  require 'plugins.autopairs',
-  require 'plugins.git',
-  require 'plugins.lisp',
-  require 'plugins.go',
-  require 'plugins.zig',
+      ---@diagnostic disable-next-line: missing-fields
+      require('nvim-treesitter.configs').setup {
+        -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+        -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+        ensure_installed = { 'lua', 'c', 'clojure', 'go' },
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = '<c-space>',
+            node_incremental = '<c-space>',
+            scope_incremental = '<c-s>',
+            node_decremental = '<M-space>',
+          },
+        },
+      }
+    end,
+  },
+
+  -- require 'plugins.autoformat',
+  -- require 'plugins.telescope',
+  -- require 'plugins.lsp',
+  -- require 'plugins.autocomplete',
+
+  -- require 'plugins.git',
+  -- require 'plugins.lisp',
+  -- require 'plugins.go',
+  -- require 'plugins.zig',
+  -- require 'plugins.markdown',
 
   { import = 'plugins' },
 
