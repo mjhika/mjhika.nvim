@@ -97,8 +97,40 @@ require('lazy').setup({
     },
   },
 
-  -- require 'plugins.theme',
-  -- require 'plugins.navigation',
+  {
+    'savq/melange-nvim',
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'melange'
+    end,
+  },
+
+  {
+    'deris/vim-shot-f',
+    lazy = false,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  {
+    'm4xshen/hardtime.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
+    opts = {},
+    disabled_filetypes = { 'qf', 'netrw', 'NvimTree', 'lazy', 'mason', 'oil' },
+  },
+
+  {
+    'jiaoshijie/undotree',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('undotree').setup()
+      vim.keymap.set('n', '<leader>u', '<cmd>lua require("undotree").toggle()<cr>', { desc = '[U]ndo Tree' })
+    end,
+  },
   -- require 'plugins.autopairs',
   -- require 'plugins.whitespace',
   -- require 'plugins.comment',
