@@ -28,6 +28,7 @@ vim.opt.showmode = false -- disable echoing the mode in favor of the status line
 vim.opt.list = true -- formatting for some whitespace
 vim.opt.listchars = 'tab:⇥ ,eol:λ,nbsp:⋅,trail:∘' -- the whitespace replacements
 vim.opt.background = 'dark' -- a dark background for this theme
+vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
