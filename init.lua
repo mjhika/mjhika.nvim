@@ -26,8 +26,7 @@ vim.opt.timeout = true -- timeout for which-key
 vim.opt.timeoutlen = 350 -- timeout for which-key
 vim.opt.showmode = false -- disable echoing the mode in favor of the status line
 vim.opt.list = true -- formatting for some whitespace
-vim.opt.listchars = 'tab:⇥ ,eol:λ,nbsp:⋅,trail:∘' -- the whitespace replacements
-vim.opt.background = 'dark' -- a dark background for this theme
+vim.opt.listchars = 'tab:⇥ ,eol:⏎,nbsp:⋅,trail:∘' -- the whitespace replacements
 vim.opt.scrolloff = 10
 
 -- [[ Basic Keymaps ]]
@@ -99,10 +98,14 @@ require('lazy').setup({
   },
 
   {
-    'savq/melange-nvim',
-    priority = 1000,
+    'projekt0n/github-nvim-theme',
+    name = 'github-theme',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
-      vim.cmd.colorscheme 'melange'
+      require('github-theme').setup {}
+
+      vim.cmd.colorscheme 'github_light'
     end,
   },
 
@@ -114,12 +117,6 @@ require('lazy').setup({
     'stevearc/oil.nvim',
     opts = {},
     -- dependencies = { 'nvim-tree/nvim-web-devicons' },
-  },
-  {
-    'm4xshen/hardtime.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'nvim-lua/plenary.nvim' },
-    opts = {},
-    disabled_filetypes = { 'qf', 'netrw', 'NvimTree', 'lazy', 'mason', 'oil' },
   },
 
   {
@@ -157,11 +154,12 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- document existing key chains
-      require('which-key').register {
-        ['<leader>d'] = { name = '[D]iagnostics', _ = 'which_key_ignore' },
-        ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-        ['<leader>l'] = { name = '[L]SP', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = '[T]oggle', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>d', group = '[D]iagnostics' },
+        { '<leader>f', group = '[F]ind' },
+        { '<leader>l', group = '[L]SP' },
+        { '<leader>t', group = '[T]oggle' },
+        { '<leader>g', group = '[G]it' },
       }
     end,
   },
@@ -201,7 +199,7 @@ require('lazy').setup({
     end,
   },
 
-  {
+  { -- FindMy, but for files
     'nvim-telescope/telescope.nvim',
     event = 'VeryLazy',
     branch = '0.1.x',
@@ -287,6 +285,233 @@ require('lazy').setup({
     end,
   },
 
+  { -- LSP Configuration & Plugins
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      -- Automatically install LSPs to stdpath for neovim
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+      -- 'WhoIsSethDaniel/mason-tool-installer.nvim',
+
+      -- Additional lua configuration, makes nvim stuff amazing!
+      'folke/neodev.nvim',
+
+      -- Useful status updates for LSP
+      { 'j-hui/fidget.nvim', opts = {} },
+    },
+    config = function()
+      require('neodev').setup()
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        callback = function(event)
+          local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+          end
+          -- Important LSP Navigation keybinds
+          --  To jump back, press <C-T>.
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('<leader>lt', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>lsd', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>lsw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+          map('<leader>lr', vim.lsp.buf.rename, '[L]SP [R]ename') -- Rename the variable under your cursor
+          map('<leader>lc', function()
+            vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
+          end, '[L]SP [C]ode Action')
+          map('<leader>K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
+          map('<M-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
+        end,
+      })
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+      local servers = {
+        clangd = {},
+        gopls = {},
+        clojure_lsp = {},
+        -- ocamllsp = {},
+        zls = {},
+        lua_ls = {
+          -- cmd = {...},
+          -- filetypes { ...},
+          -- capabilities = {},
+          settings = {
+            Lua = {
+              workspace = {
+                checkThirdParty = false,
+                library = {
+                  '${3rd}/luv/library',
+                  unpack(vim.api.nvim_get_runtime_file('', true)),
+                },
+              },
+              telemetry = { enable = false },
+              diagnostics = { disable = { 'missing-fields' } },
+            },
+          },
+        },
+      }
+
+      -- local ensure_installed = vim.tbl_keys(servers or {})
+      -- vim.list_extend(ensure_installed, {
+      --   -- 'stylua',
+      --   -- 'ocamlformat',
+      --   -- 'goimports',
+      --   -- 'golangci-lint',
+      -- })
+
+      -- vim.list_extend(ensure_installed, vim.tbl_keys(servers))
+      -- Ensure the servers above are installed
+      require('mason').setup()
+      -- require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-lspconfig').setup {
+        handlers = {
+          function(server_name)
+            local server = servers[server_name] or {}
+            require('lspconfig')[server_name].setup {
+              cmd = server.cmd,
+              settings = server.settings,
+              filetypes = server.filetypes,
+              capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
+            }
+          end,
+        },
+      }
+    end,
+  },
+
+  -- autoformatting for files
+  {
+    'stevearc/conform.nvim',
+    event = 'VeryLazy',
+    opts = {
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        clojure = { 'cljfmt' },
+        go = { 'gofmt', 'goimports' },
+        c = { 'clang_format' },
+      },
+    },
+  },
+
+  -- Adds git related signs to the gutter, as well as utilities for managing changes
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      -- See `:help gitsigns.txt`
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+      },
+      on_attach = function(bufnr)
+        local gitsigns = require 'gitsigns'
+        vim.keymap.set('n', '<leader>gb', function()
+          gitsigns.blame_line { full = true }
+        end, { buffer = bufnr, desc = '[G]it [B]lame line' })
+        vim.keymap.set('n', '<leader>gv', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[G]it Pre[v]iew hunk' })
+      end,
+    },
+  },
+
+  { -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
+    dependencies = {
+      -- Snippet Engine & its associated nvim-cmp source
+      {
+        'L3MON4D3/LuaSnip',
+        build = (function()
+          -- Build Step is needed for regex support in snippets
+          -- This step is not supported in many windows environments
+          -- Remove the below condition to re-enable on windows
+          if vim.fn.has 'win32' == 1 then
+            return
+          end
+          return 'make install_jsregexp'
+        end)(),
+      },
+      'saadparwaiz1/cmp_luasnip',
+
+      -- add flair to the cmp suggestions
+      'onsails/lspkind.nvim',
+
+      -- other sources
+      'hrsh7th/cmp-buffer',
+      'PaterJason/cmp-conjure',
+
+      -- Adds LSP completion capabilities
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+
+      -- Adds a number of user-friendly snippets
+      'rafamadriz/friendly-snippets',
+    },
+    config = function()
+      -- See `:help cmp`
+      local cmp = require 'cmp'
+      local lspkind = require 'lspkind'
+      local luasnip = require 'luasnip'
+      require('luasnip.loaders.from_vscode').lazy_load()
+      luasnip.config.setup {}
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        completion = {
+          completeopt = 'menu,menuone,noinsert,noselect',
+        },
+        mapping = cmp.mapping.preset.insert {
+          ['<C-n>'] = cmp.mapping.select_next_item(), -- Select the [n]ext item
+          ['<C-p>'] = cmp.mapping.select_prev_item(), -- Select the [p]revious item
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<C-Space>'] = cmp.mapping.complete {},
+          ['<C-l>'] = cmp.mapping(function() -- <c-l> will move you to the right of each of the expansion locations.
+            if luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            end
+          end, { 'i', 's' }),
+          ['<C-h>'] = cmp.mapping(function() -- <c-h> is similar, except moving you backwards.
+            if luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            end
+          end, { 'i', 's' }),
+        },
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'conjure' },
+          { name = 'path' },
+          { name = 'buffer' },
+        },
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol_text',
+            menu = {
+              buffer = '[Buffer]',
+              conjure = '[Conjure]',
+              nvim_lsp = '[LSP]',
+              path = '[Path]',
+              luasnip = '[LuaSnip]',
+            },
+          },
+        },
+      }
+    end,
+  },
   -- require 'plugins.autoformat',
   -- require 'plugins.lsp',
   -- require 'plugins.autocomplete',
