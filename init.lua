@@ -548,6 +548,20 @@ require('lazy').setup({
   -- java classes decompiled for easy reading
   { 'udalov/javap-vim', ft = { 'java', 'clojure' } },
 
+  -- things for Go
+  {
+    'fatih/vim-go',
+    ft = 'go',
+  },
+  {
+    'pcolladosoto/tinygo.nvim',
+    cmd = {
+      'TinyGoSetTarget',
+      'TinyGoTargets',
+      'TinyGoEnv',
+    },
+    opts = {},
+  },
 
   -- things for Zig
   { 'ziglang/zig.vim', ft = 'zig' },
