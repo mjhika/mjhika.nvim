@@ -32,21 +32,21 @@ vim.opt.scrolloff = 10
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })                               -- silence the normal <Space>
-vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move up half page' })                           -- center while scrolling
-vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move down half page' })                         -- center while scrolling
-vim.keymap.set('n', '<C-j>', ':bnext<CR>', { desc = 'Next Buffer', silent = true })               -- easily change buffers
-vim.keymap.set('n', '<C-k>', ':bprev<CR>', { desc = 'Previous Buffer', silent = true })           -- easily change buffers
-vim.keymap.set('n', '<leader>c', ':bdelete<CR>', { desc = 'Close Buffer', silent = true })        -- close buffer
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true }) -- silence the normal <Space>
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Move up half page' }) -- center while scrolling
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Move down half page' }) -- center while scrolling
+vim.keymap.set('n', '<C-j>', ':bnext<CR>', { desc = 'Next Buffer', silent = true }) -- easily change buffers
+vim.keymap.set('n', '<C-k>', ':bprev<CR>', { desc = 'Previous Buffer', silent = true }) -- easily change buffers
+vim.keymap.set('n', '<leader>c', ':bdelete<CR>', { desc = 'Close Buffer', silent = true }) -- close buffer
 vim.keymap.set('n', '<leader>C', ':bdelete!<CR>', { desc = 'Force Close Buffer', silent = true }) -- close buffer really
-vim.cmd [[ nnoremap <silent> <expr> <CR> {-> v:hlsearch ? "<cmd>nohl\<CR>" : "\<CR>"}() ]]        -- clear the highlighted search with <CR>
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })             -- Remap for dealing with word wrap
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })             -- Remap for dealing with word wrap
-vim.keymap.set('t', '<C-c><C-c>', '<C-\\><C-n>', { desc = 'Escape Escape from the terminal' })    -- make escaping the terminal easier
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected line down' })                -- easier select moving
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected line up' })                  -- easier select moving
+vim.cmd [[ nnoremap <silent> <expr> <CR> {-> v:hlsearch ? "<cmd>nohl\<CR>" : "\<CR>"}() ]] -- clear the highlighted search with <CR>
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true }) -- Remap for dealing with word wrap
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true }) -- Remap for dealing with word wrap
+vim.keymap.set('t', '<C-c><C-c>', '<C-\\><C-n>', { desc = 'Escape Escape from the terminal' }) -- make escaping the terminal easier
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selected line down' }) -- easier select moving
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selected line up' }) -- easier select moving
 
-vim.keymap.set('n', '<leader>tt', function()                                                      -- make a terminal appear
+vim.keymap.set('n', '<leader>tt', function() -- make a terminal appear
   vim.cmd.split()
   vim.cmd.terminal()
   vim.cmd 'startinsert'
@@ -100,7 +100,7 @@ require('lazy').setup({
   {
     'projekt0n/github-nvim-theme',
     name = 'github-theme',
-    lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require('github-theme').setup {}
@@ -169,7 +169,7 @@ require('lazy').setup({
     'echasnovski/mini.nvim',
     config = function()
       require('mini.ai').setup { n_lines = 500 } -- Better Around/Inside textobjects
-      require('mini.surround').setup()           -- Add/delete/replace surroundings (brackets, quotes, etc.)
+      require('mini.surround').setup() -- Add/delete/replace surroundings (brackets, quotes, etc.)
     end,
   },
 
@@ -229,7 +229,7 @@ require('lazy').setup({
             'node_modules',
             '%.idea',
             'project/target', --https://www.lua.org/pil/20.2.html
-            'target',         --https://www.lua.org/pil/20.2.html
+            'target', --https://www.lua.org/pil/20.2.html
             '%.cache',
             '%.cpcache',
             'cljs%-runtime',
@@ -323,7 +323,7 @@ require('lazy').setup({
           map('<leader>lc', function()
             vim.lsp.buf.code_action { context = { only = { 'quickfix', 'refactor', 'source' } } }
           end, '[L]SP [C]ode Action')
-          map('<leader>K', vim.lsp.buf.hover, 'Hover Documentation')          -- See `:help K` for why this keymap
+          map('<leader>K', vim.lsp.buf.hover, 'Hover Documentation') -- See `:help K` for why this keymap
           map('<M-k>', vim.lsp.buf.signature_help, 'Signature Documentation') -- Show the signature of the function you're currently completing.
         end,
       })
@@ -420,8 +420,7 @@ require('lazy').setup({
         vim.keymap.set('n', '<leader>gb', function()
           gitsigns.blame_line { full = true }
         end, { buffer = bufnr, desc = '[G]it [B]lame line' })
-        vim.keymap.set('n', '<leader>gv', require('gitsigns').preview_hunk,
-          { buffer = bufnr, desc = '[G]it Pre[v]iew hunk' })
+        vim.keymap.set('n', '<leader>gv', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[G]it Pre[v]iew hunk' })
       end,
     },
   },
