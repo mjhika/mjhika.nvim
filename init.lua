@@ -549,6 +549,8 @@ require('lazy').setup({
   { 'udalov/javap-vim', ft = { 'java', 'clojure' } },
 
 
+  -- things for Zig
+  { 'ziglang/zig.vim', ft = 'zig' },
 
   -- load any optional plugins from the plugin folder
   { import = 'plugins' },
