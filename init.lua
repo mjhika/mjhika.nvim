@@ -1,6 +1,6 @@
 -- [[ Setting options ]]
-vim.g.mapleader = ' '          -- bindings for global
-vim.g.maplocalleader = ','     -- bindings for local
+vim.g.mapleader = ' ' -- bindings for global
+vim.g.maplocalleader = ' m' -- bindings for local
 vim.opt.hlsearch = true
 vim.opt.colorcolumn = '80,120' -- column width
 vim.opt.cursorline = true
@@ -160,6 +160,7 @@ require('lazy').setup({
         { '<leader>l', group = '[L]SP' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>g', group = '[G]it' },
+        { '<leader>m', group = '[M]ode leader' },
       }
     end,
   },
