@@ -514,6 +514,40 @@ require('lazy').setup({
       }
     end,
   },
+
+  {
+    'gpanders/nvim-parinfer',
+    ft = { 'clojure', 'fennel', 'janet' },
+    init = function()
+      vim.g.parinfer_force_balance = true
+    end,
+  },
+  {
+    'Olical/conjure',
+    ft = { 'clojure', 'fennel', 'janet' },
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('comment_config', { clear = true }),
+        pattern = { 'clojure' },
+        callback = function()
+          vim.bo.commentstring = ';; %s'
+        end,
+        desc = 'Lisp style line comment',
+      })
+
+      vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+        group = vim.api.nvim_create_augroup('repl_is_clojrue_file', { clear = true }),
+        pattern = { '*.repl' },
+        callback = function()
+          vim.cmd [[ set ft=clojure ]]
+        end,
+        desc = 'Associate *.repl file as a clojure filetype.',
+      })
+    end,
+  },
+  -- java classes decompiled for easy reading
+  { 'udalov/javap-vim', ft = { 'java', 'clojure' } },
+
   -- require 'plugins.autoformat',
   -- require 'plugins.lsp',
   -- require 'plugins.autocomplete',
