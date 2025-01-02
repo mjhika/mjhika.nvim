@@ -514,6 +514,7 @@ require('lazy').setup({
     end,
   },
 
+  -- things for Clojure and other Lisps
   {
     'gpanders/nvim-parinfer',
     ft = { 'clojure', 'fennel', 'janet' },
@@ -547,20 +548,10 @@ require('lazy').setup({
   -- java classes decompiled for easy reading
   { 'udalov/javap-vim', ft = { 'java', 'clojure' } },
 
-  -- require 'plugins.autoformat',
-  -- require 'plugins.lsp',
-  -- require 'plugins.autocomplete',
 
-  -- require 'plugins.git',
-  -- require 'plugins.lisp',
-  -- require 'plugins.go',
-  -- require 'plugins.zig',
-  -- require 'plugins.markdown',
 
+  -- load any optional plugins from the plugin folder
   { import = 'plugins' },
-
-  -- older kickstart ones keeping for reference
-  -- require 'kickstart.plugins.debug',
 }, {})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
