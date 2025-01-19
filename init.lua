@@ -396,7 +396,7 @@ require('lazy').setup({
       },
       formatters_by_ft = {
         lua = { 'stylua' },
-        clojure = { 'cljfmt' },
+        clojure = { 'clojure_lsp' },
         go = { 'gofmt', 'goimports' },
         c = { 'clang_format' },
       },
