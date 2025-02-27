@@ -10,7 +10,6 @@
   "conjure": { "branch": "main", "commit": "367df2ce92252924911c7a0af389482d9c300e9b" },
   "fidget.nvim": { "branch": "main", "commit": "a0abbf18084b77d28bc70e24752e4f4fd54aea17" },
   "friendly-snippets": { "branch": "main", "commit": "efff286dd74c22f731cdec26a70b46e5b203c619" },
-  "github-theme": { "branch": "main", "commit": "c106c9472154d6b2c74b74565616b877ae8ed31d" },
   "gitsigns.nvim": { "branch": "main", "commit": "817bd848fffe82e697b4da656e3f2834cd0665c5" },
   "javap-vim": { "branch": "master", "commit": "0d2af4e6eb675bd38a169050b1daa79847cb0146" },
   "lazy.nvim": { "branch": "main", "commit": "d8f26efd456190241afd1b0f5235fe6fdba13d4a" },
@@ -37,5 +36,6 @@
   "vim-shot-f": { "branch": "master", "commit": "eea71d2a1038aa87fe175de9150b39dc155e5e7f" },
   "vim-sleuth": { "branch": "master", "commit": "be69bff86754b1aa5adcbb527d7fcd1635a84080" },
   "which-key.nvim": { "branch": "main", "commit": "1f8d414f61e0b05958c342df9b6a4c89ce268766" },
+  "zenburn.nvim": { "branch": "master", "commit": "f5ee12b30119499c7fa7f95719cd7c5aab9f9f29" },
   "zig.vim": { "branch": "master", "commit": "f023e86b042c0d5bef68b9f0651144a6bf6d642e" }
 }
