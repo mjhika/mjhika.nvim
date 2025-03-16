@@ -27,7 +27,8 @@ vim.opt.timeoutlen = 350 -- timeout for which-key
 vim.opt.showmode = false -- disable echoing the mode in favor of the status line
 vim.opt.list = true -- formatting for some whitespace
 vim.opt.listchars = 'tab:⇥ ,eol:⏎,nbsp:⋅,trail:∘' -- the whitespace replacements
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 20
+vim.opt.wrap = false
 
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
