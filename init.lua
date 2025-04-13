@@ -177,7 +177,7 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup {
         -- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
         -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-        ensure_installed = { 'lua', 'c', 'clojure', 'go', 'zig', 'java' },
+        ensure_installed = { 'lua', 'c', 'clojure', 'go', 'java' },
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
@@ -286,7 +286,7 @@ require('lazy').setup({
       -- Automatically install LSPs to stdpath for neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      -- 'WhoIsSethDaniel/mason-tool-installer.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -329,8 +329,6 @@ require('lazy').setup({
         clangd = {},
         gopls = {},
         clojure_lsp = {},
-        -- ocamllsp = {},
-        zls = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes { ...},
@@ -351,18 +349,18 @@ require('lazy').setup({
         },
       }
 
-      -- local ensure_installed = vim.tbl_keys(servers or {})
-      -- vim.list_extend(ensure_installed, {
-      --   -- 'stylua',
-      --   -- 'ocamlformat',
-      --   -- 'goimports',
-      --   -- 'golangci-lint',
-      -- })
+      local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
+        'stylua',
+        'goimports',
+        'golangci-lint',
+        'clj-kondo',
+      })
 
-      -- vim.list_extend(ensure_installed, vim.tbl_keys(servers))
+      vim.list_extend(ensure_installed, vim.tbl_keys(servers))
       -- Ensure the servers above are installed
       require('mason').setup()
-      -- require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
@@ -390,9 +388,9 @@ require('lazy').setup({
       },
       formatters_by_ft = {
         lua = { 'stylua' },
-        clojure = { 'clojure_lsp' },
-        go = { 'gofmt', 'goimports' },
         c = { 'clang_format' },
+        clojure = { 'clj-kondo' },
+        go = { 'gofmt', 'goimports', 'golangci-lint' },
       },
     },
   },
