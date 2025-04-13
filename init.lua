@@ -53,10 +53,6 @@ vim.keymap.set('n', '<leader>tt', function() -- make a terminal appear
   vim.cmd 'startinsert'
 end, { desc = '[T]oggle [t]erm' })
 
-vim.keymap.set('n', '<leader>tm', function() -- toggle MarkdownPreviewToggle
-  vim.cmd 'MarkdownPreviewToggle'
-end, { desc = '[T]oggle [M]arkdown Preview' })
-
 -- [[ Diagnostic keymaps ]]
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -565,7 +561,7 @@ require('lazy').setup({
   { 'ziglang/zig.vim', ft = 'zig' },
 
   -- load any optional plugins from the plugin folder
-  { import = 'plugins' },
+  -- { import = 'plugins' },
 }, {})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
