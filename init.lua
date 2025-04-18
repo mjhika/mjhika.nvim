@@ -139,7 +139,7 @@ require('lazy').setup({
 
   { 'tpope/vim-sleuth' },
 
-  { 'numToStr/Comment.nvim', opts = {} },
+  -- { 'numToStr/Comment.nvim', opts = {} },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
