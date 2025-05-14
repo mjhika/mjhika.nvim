@@ -95,11 +95,17 @@ require('lazy').setup({
   },
 
   {
-    'phha/zenburn.nvim',
+    'ellisonleao/gruvbox.nvim',
     lazy = false,
     priority = 1000,
     config = function()
-      require('zenburn').setup()
+      require('gruvbox').setup {
+        italic = {
+          strings = false,
+        },
+        contrast = 'hard',
+      }
+      vim.cmd.colorscheme 'gruvbox'
     end,
   },
 
@@ -138,8 +144,6 @@ require('lazy').setup({
   },
 
   { 'tpope/vim-sleuth' },
-
-  -- { 'numToStr/Comment.nvim', opts = {} },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
@@ -540,11 +544,6 @@ require('lazy').setup({
   -- java classes decompiled for easy reading
   { 'udalov/javap-vim', ft = { 'java', 'clojure' } },
 
-  -- things for Go
-  {
-    'fatih/vim-go',
-    ft = 'go',
-  },
   {
     'pcolladosoto/tinygo.nvim',
     cmd = {
@@ -554,9 +553,6 @@ require('lazy').setup({
     },
     opts = {},
   },
-
-  -- things for Zig
-  { 'ziglang/zig.vim', ft = 'zig' },
 
   -- load any optional plugins from the plugin folder
   -- { import = 'plugins' },
