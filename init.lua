@@ -395,6 +395,7 @@ require('lazy').setup({
         c = { 'clang_format' },
         clojure = { 'clj-kondo' },
         go = { 'gofmt', 'goimports', 'golangci-lint' },
+        json = { 'jq' },
       },
     },
   },
